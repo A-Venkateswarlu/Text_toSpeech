@@ -1,12 +1,12 @@
-from flask import Flask, request, send_file, render_template
+from flask import Flask, request, send_file
 from gtts import gTTS
 import os
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return send_file('index.html')
+    return send_file('index.html')  # index.html must be in root
 
 @app.route('/speak', methods=['POST'])
 def speak():
@@ -18,6 +18,6 @@ def speak():
     tts.save("output.mp3")
 
     return send_file("output.mp3", as_attachment=True)
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  
+    app.run(host='0.0.0.0', port=port)
